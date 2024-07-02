@@ -1,51 +1,51 @@
 #!/usr/bin/python3
-def isWinner(x, nums):
-    if x < 1 or not nums:
-        return None
-
-    max_num = max(nums)
-    primes = sieve_of_eratosthenes(max_num)
-
-    maria_wins = 0
-    ben_wins = 0
-
-    for n in nums:
-        if play_game(n, primes):
-            maria_wins += 1
-        else:
-            ben_wins += 1
-
-    if maria_wins > ben_wins:
-        return "Maria"
-    elif ben_wins > maria_wins:
-        return "Ben"
-    else:
-        return None
+"""
+Define isWinner function, a solution to the Prime Game problem
+"""
 
 
-def sieve_of_eratosthenes(n):
+def primes(n):
+    """
+    Return list of prime numbers between 1 and n inclusive
+
+    Args:
+        n (int): upper boundary of range. lower boundary is always 1
+    """
+    prime = []
     sieve = [True] * (n + 1)
-    sieve[0] = sieve[1] = False
-    for i in range(2, int(n ** 0.5) + 1):
-        if sieve[i]:
-            for j in range(i * i, n + 1, i):
-                sieve[j] = False
-    return [i for i in range(n + 1) if sieve[i]]
+    for p in range(2, n + 1):
+        if sieve[p]:
+            prime.append(p)
+            for i in range(p, n + 1, p):
+                sieve[i] = False
+    return prime
 
 
-def play_game(n, primes):
-    moves = 0
-    available = [True] * (n + 1)
+def isWinner(x, nums):
+    """
+    Determines winner of Prime Game
 
-    for prime in primes:
-        if prime > n:
-            break
-        if available[prime]:
-            moves += 1
-            for multiple in range(prime, n + 1, prime):
-                available[multiple] = False
+    Args:
+        x (int): number of rounds of the game
+        nums (list): upper limit of range for each round
 
-    return moves % 2 == 1
+    Return:
+        Name of winner (Maria or Ben) or None if winner cannot be found
+    """
+    if x is None or nums is None or x == 0 or nums == []:
+        return None
+    Maria = Ben = 0
+    for i in range(x):
+        prime = primes(nums[i])
+        if len(prime) % 2 == 0:
+            Ben += 1
+        else:
+            Maria += 1
+    if Maria > Ben:
+        return 'Maria'
+    elif Ben > Maria:
+        return 'Ben'
+    return None
 
 
 # Example usage:

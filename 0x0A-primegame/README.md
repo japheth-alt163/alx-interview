@@ -103,4 +103,4 @@ Directory: 0x0A-primegame
 File: 0-prime_game.py
 
 keep grinding"
-
+yeah its me agioanst the world
